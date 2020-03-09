@@ -1,5 +1,5 @@
 
-function [optimalConfig] = greedyThreshold(possible)
+function [optimalConfig] = greedyThreshold(possible,threshold)
 
 global timesteps;
 global panelSize;
@@ -105,7 +105,7 @@ while k < N
                 
                 tableOrdered(removePositions,:) = [];
             else
-                if (corrcoef(minG(oldPosition(1),oldPosition(2),:),minG(position(1),position(2),:)))>0.0
+                if (corrcoef(minG(oldPosition(1),oldPosition(2),:),minG(position(1),position(2),:)))>threshold
                     oldPosition=position;
                     k = k+1;
                     optimalConfig{uint8(k),1} = position;

@@ -104,5 +104,10 @@ topology = cell(idivide(N,S), S);
 if(algorithm == 1)
     disp('Greedy algorithm');
 %     [maxP, topology] = greedyAlgorithm(possible);    
-optimalConfig = greedyThreshold(possible);
+ths=0.4:0.05:0.7;
+for i=1:length(ths)
+	optimalConfig = greedyThreshold(possible,ths(i));
+	filename=replace("Thresh"+num2str(ths( i )),'.','_')
+	writecell(optimalConfig,filename+'.dat')
+end
 end

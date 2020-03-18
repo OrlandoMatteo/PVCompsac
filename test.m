@@ -1,4 +1,7 @@
-clear all
+function [percAnnualProd] = test(CVSFileName,N)
+%UNTITLED7 Summary of this function goes here
+%   Detailed explanation goes here
+
 disp('PV panel floorplanning: an EDAGroup tool...')
 addpath scripts
 addpath matrici
@@ -11,25 +14,21 @@ global statsMinG;
 global panelSize;
 global optimalConfig; 
 
-
-% disp(' - Handle input data')
-%CVSFileName = 'primo_20.mat';
-CVSFileName = 'secondo_20.mat';
-%CVSFileName = 'terzo_20.mat';
 load(CVSFileName)
+%CVSFileName = 'primo_20.mat';
+%CVSFileName = 'secondo_20.mat';
+% CVSFileName = 'terzo_20.mat';
 
 global maxP;
 maxP = 0;
 global N;
 % N = 16; 
-%N= 56;
-%N=40; 
-%N = 64;
-N =112;
-%N=120;
+%N = 32;
+%N=48; 
+% N = 64;
+ %N = 96; 
 global S;
 S = uint8(8);
-%8
 
 optimalConfig = cell(N,1);
 
@@ -99,27 +98,32 @@ clear i j ans areaOfInterest
 
 disp(' - Launching exploration')
 
-
+topology = cell(idivide(N,S), S);
 
  algorithm = 1; % greedy
 % algorithm = 2; % exhaustive
 
-% if(algorithm == 1)
-%     disp('Greedy algorithm');
+if(algorithm == 1)
+    disp('Greedy algorithm');
 %     [maxP, topology] = greedyAlgorithm(possible);    
-%ths=0.5;
-topology = cell(idivide(N,S), S);
-ths=0:0.01:0.85;
+ths=0:0.05:0.75;
+
 for i=1:length(ths)
-	%optimalConfig = greedyThreshold(possible,ths(i));
-    [maxP, topology]=greedyThreshold(possible,ths(i));
-    prod(i)=maxP;
+	optimalConfig = greedyThreshold(possible,ths(i));
+    prod(i,:)=calculateProduction(optimalConfig,minG);
 	%filename=replace("Thresh"+num2str(ths( i )),'.','_')
-	%writecell(optimalConfig,filename+'.dat')
+	%writecell(optimalConfig,filename+'.dat')% clear rows cols ans CVSFileName numberOfPanels panelSizeInTiles
+% clear root rootID x y timesteps minG matrix area algorithm G sizeOfArea
+% clear statsMinG
+
 end
-%end
-%optimalConfig = greedyThreshold(possible,ths(i));
-% annualProd=sum(prod,2);
-percAnnualProd=100*(prod-prod(1))/prod(1);
-figure
-bar(percAnnualProd)
+end
+annualProd=sum(prod,2);
+percAnnualProd=100*(annualProd(1)-annualProd)/annualProd(1);
+
+clear rows cols ans CVSFileName numberOfPanels panelSizeInTiles
+clear root rootID x y timesteps minG matrix area algorithm G sizeOfArea
+clear statsMinG
+
+end
+

@@ -12,9 +12,9 @@ global optimalConfig;
 
 
 % disp(' - Handle input data')
- CVSFileName = 'primo_20.mat';
+ %CVSFileName = 'primo_20.mat';
 % CVSFileName = 'secondo_20.mat';
-% CVSFileName = 'terzo_20.mat';
+ CVSFileName = 'terzo_20.mat';
 load(CVSFileName)
 
 global maxP;
@@ -103,6 +103,7 @@ topology = cell(idivide(N,S), S);
 if(algorithm == 1)
     disp('Greedy algorithm');
 %     [maxP, topology] = greedyAlgorithm(possible);    
+%[maxP, topology] = greedyAlgorithm3(possible);
 [maxP, topology] = greedyAlgorithm3(possible);
 
 else if(algorithm == 2)

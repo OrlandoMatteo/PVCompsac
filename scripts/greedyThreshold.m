@@ -1,5 +1,5 @@
 
-function [optimalConfig] = greedyThreshold(possible,threshold)
+function [maxP, topology] = greedyThreshold(possible,threshold)
 
 global timesteps;
 global panelSize;
@@ -40,7 +40,7 @@ maxP = 0;
 optimalConfig = cell(N,1);
 
 maxDistance = sizeOfMinG(1)+sizeOfMinG(2);
-
+tempRemoved=[];
 while k < N
     
     selected = tableOrdered.Percentile == max(tableOrdered.Percentile);
@@ -105,6 +105,9 @@ while k < N
                 
                 tableOrdered(removePositions,:) = [];
             else
+                %Se il coefficiente di correlazione è maggiore di un valore
+                %dato in input alla funzione il pannello viene aggiunto
+                %alla serie, altrimenti viene scartato
                 if (corrcoef(minG(oldPosition(1),oldPosition(2),:),minG(position(1),position(2),:)))>threshold
                     oldPosition=position;
                     k = k+1;
@@ -117,15 +120,31 @@ while k < N
                     removePositions = removePositions(:,1) & removePositions(:,2);
 
                     tableOrdered(removePositions,:) = [];
+                        if (~isempty(tempRemoved))
+                            
+                            tableOrdered=[tempRemoved;tableOrdered];
+                            tempRemoved=[];
+                        end
                 else
                     removePositions = tableOrdered.Position == position;
                     removePositions = removePositions(:,1) & removePositions(:,2);
-                
+                    tempRemoved=[tempRemoved  ;tableOrdered(removePositions,:)];
                     tableOrdered(removePositions,:) = [];
+                    
                 end
             end
         end
     end
     
 end
+
+P = zeros(timesteps,1);
+V = zeros(timesteps,1);
+I = zeros(timesteps,1);
+
+[P, topology] = applyTopology(optimalConfig);
+
+disp(strcat('Max. power with percentile: ',num2str(sum(P))))
+
+maxP = sum(P);
 end

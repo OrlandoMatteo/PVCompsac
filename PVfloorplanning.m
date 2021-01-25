@@ -21,7 +21,7 @@ global maxP;
 maxP = 0;
 global N;
 % N = 16; 
- N = 32;
+ N = 40;
 % N = 64;
 % N = 96; 
 global S;

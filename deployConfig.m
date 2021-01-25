@@ -5,7 +5,7 @@ function [roof] = deployConfig(sizeOfMinG,panelSize,config)
         end
     end
     for panel=1:length(config)
-        roof(config(panel,1):config(panel,1)+panelSize(1),config(panel,2):config(panel,2)+panelSize(2))=255;
+        roof(config{panel,1}(1):config{panel,1}(1)+panelSize(1),config{panel,1}(2):config{panel,1}(2)+panelSize(2))=255;
     end
 %UNTITLED4 Summary of this function goes here
 %   Detailed explanation goes here

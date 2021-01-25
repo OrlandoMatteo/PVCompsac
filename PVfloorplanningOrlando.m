@@ -12,11 +12,14 @@ global panelSize;
 global optimalConfig; 
 
 
-% disp(' - Handle input data')
+% disp(' - Han%dle input data')%
 %CVSFileName = 'primo_20.mat';
-CVSFileName = 'secondo_20.mat';
-%CVSFileName = 'terzo_20.mat';
+%CVSFileName = 'secondo_20.mat';
+CVSFileName = 'terzo_20.mat';
+%CVSFileName = 'carcere.mat';
+
 load(CVSFileName)
+load('border3.mat')
 
 global maxP;
 maxP = 0;
@@ -25,8 +28,8 @@ global N;
 %N= 56;
 %N=40; 
 %N = 64;
-N =112;
-%N=120;
+N =32;%
+%N=152;
 global S;
 S = uint8(8);
 %8
@@ -43,13 +46,28 @@ area(find(isnan(area) == 0)) = 255;
 area = imrotate(area,19);
 area(find((area == 0))) = NaN;
 
+
 [rows, cols] = find(area == 255);
 areaOfInterest = [min(cols) min(rows) (max(cols) - min(cols)) (max(rows) - min(rows))];
 area = imcrop(area, areaOfInterest);
 
+% for i=1:51
+%     area(i,1:limit(i))=NaN;
+% end
+
+
+
+
 sizeOfArea = size(area);
 rows = sizeOfArea(1);
 cols = sizeOfArea(2);
+% roof 1 and 3 cut
+for i=1:51
+    area(i,1:limit(i))=NaN;
+end
+
+
+
 
 % irradiance trace management
 
@@ -93,12 +111,9 @@ for i = 1:1:rows
     end
 end
 
-
-
 clear i j ans areaOfInterest
 
 disp(' - Launching exploration')
-
 
 
  algorithm = 1; % greedy
@@ -109,8 +124,10 @@ disp(' - Launching exploration')
 %     [maxP, topology] = greedyAlgorithm(possible);    
 %ths=0.5;
 topology = cell(idivide(N,S), S);
-ths=0:0.01:0.85;
+%ths=0:0.01:0.64;
+ths=[0 0.61]
 for i=1:length(ths)
+    ths(i)
 	%optimalConfig = greedyThreshold(possible,ths(i));
     [maxP, topology]=greedyThreshold(possible,ths(i));
     prod(i)=maxP;
@@ -123,3 +140,6 @@ end
 percAnnualProd=100*(prod-prod(1))/prod(1);
 figure
 bar(percAnnualProd)
+figure
+%g=colorArea(topology,area,[8 4],"terzo");
+

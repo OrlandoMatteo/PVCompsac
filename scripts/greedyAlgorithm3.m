@@ -61,7 +61,6 @@ while k < N
             tableOrdered(removePositions,:) = [];
         else
             k = k+1;
-            oldPosition=position;
             optimalConfig{uint8(k),1} = position;
             
             possible(max(1,(position(1)-panelSize(1)+1)):min(rows,(position(1)+panelSize(1)-1)), ...
@@ -104,24 +103,16 @@ while k < N
                 
                 tableOrdered(removePositions,:) = [];
             else
-                if (corrcoef(minG(oldPosition(1),oldPosition(2),:),minG(position(1),position(2),:)))>0.0
-                    oldPosition=position;
-                    k = k+1;
-                    optimalConfig{uint8(k),1} = position;
-
-                    possible(max(1,(position(1)-panelSize(1)+1)):min(rows,(position(1)+panelSize(1)-1)), ...
-                        max(1,(position(2)-panelSize(2)+1)):min(cols,(position(2)+panelSize(2)-1))) = 0;
-
-                    removePositions = tableOrdered.Position == position;
-                    removePositions = removePositions(:,1) & removePositions(:,2);
-
-                    tableOrdered(removePositions,:) = [];
-                else
-                    removePositions = tableOrdered.Position == position;
-                    removePositions = removePositions(:,1) & removePositions(:,2);
+                k = k+1;
+                optimalConfig{uint8(k),1} = position;
                 
-                    tableOrdered(removePositions,:) = [];
-                end
+                possible(max(1,(position(1)-panelSize(1)+1)):min(rows,(position(1)+panelSize(1)-1)), ...
+                    max(1,(position(2)-panelSize(2)+1)):min(cols,(position(2)+panelSize(2)-1))) = 0;
+                
+                removePositions = tableOrdered.Position == position;
+                removePositions = removePositions(:,1) & removePositions(:,2);
+                
+                tableOrdered(removePositions,:) = [];
             end
         end
     end

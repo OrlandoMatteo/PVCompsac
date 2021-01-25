@@ -46,7 +46,7 @@ while k < N
     selected = tableOrdered.Percentile == max(tableOrdered.Percentile);
     
     if(k == 24)
-        disp('ecco')
+        %disp('ecco')
     end
     
     if(mod(k,S) == 0)
@@ -109,7 +109,7 @@ while k < N
                 %dato in input alla funzione il pannello viene aggiunto
                 %alla serie, altrimenti viene scartato
                 if (corrcoef(minG(oldPosition(1),oldPosition(2),:),minG(position(1),position(2),:)))>threshold
-                    oldPosition=position;
+                    %oldPosition=position;
                     k = k+1;
                     optimalConfig{uint8(k),1} = position;
 
@@ -144,7 +144,7 @@ I = zeros(timesteps,1);
 
 [P, topology] = applyTopology(optimalConfig);
 
-disp(strcat('Max. power with percentile: ',num2str(sum(P))))
+%disp(strcat('Max. power with percentile: ',num2str(sum(P))))
 
 maxP = sum(P);
 end
